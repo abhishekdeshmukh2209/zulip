@@ -529,14 +529,16 @@ def get_profile_backend(request: HttpRequest, user_profile: UserProfile) -> Http
                                       target_user=user_profile,
                                       client_gravatar=False,
                                       user_avatar_url_field_optional=False)
+    logging.warn("#### /json/users/ get_profile_backend user_profile.id = %s ######",user_profile.id)
     result: Dict[str, Any] = raw_user_data[user_profile.id]
-
+    logging.warn("#### /json/users/ get_profile_backend warn result 1 = %s ######",result)
     result['max_message_id'] = -1
-
+    logging.warn("#### /json/users/ get_profile_backend warn result 2 = %s ######",result)
     messages = Message.objects.filter(usermessage__user_profile=user_profile).order_by('-id')[:1]
+    logging.warn("#### /json/users/ get_profile_backend messages  = %s ######",messages)
     if messages:
         result['max_message_id'] = messages[0].id
-
+    logging.warn("#### /json/users/ max_message_id messages  = %s ######",max_message_id)
     return json_success(result)
 
 @has_request_variables
